@@ -1,0 +1,8 @@
+准备工作
+0. 安装node.js环境
+1. 安装依赖：npm install
+
+启动应用
+3. $env:NODE_OPTIONS = "--openssl-legacy-provider"
+   or set NODE_OPTIONS=--openssl-legacy-provider
+4. npm run dev

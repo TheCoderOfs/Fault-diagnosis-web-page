@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="这些都是描述">
+    <meta name="keywords" content="这些都是关键字">
+    <meta name="author" content="作者名">
+    <title>这是标题</title>
+    <script type="text/javascript">
+
+        window.onload = function(){
+            get("http://localhost:5003/get/currentmodel", true);
+        }
+
+        function getXhr(){
+            if (window.XMLHttpRequest) {
+                // 用于现代浏览器的代码
+                 xmlhttp = new XMLHttpRequest();
+             } else {
+                // 应对老版本 IE 浏览器的代码
+                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+             }
+             return xmlhttp;
+        }
+
+        function get(url,async){
+            var xhr = getXhr();
+                xhr.open('GET',url,async);
+                xhr.send(null);
+                xhr.onreadystatechange=function(){
+                    if(xhr.readyState ===4){
+                        var text ;
+                        if(xhr.status === 200){
+                            text=xhr.responseText;
+                        }else{
+                            text='获取失败';
+                        }
+                        callback(text);
+                    }
+                }
+        }
+
+        function callback(text){
+            var res = JSON.parse(text);
+            document.getElementById("txt").innerText="当前模型: "+res.modelname;
+<!--            alert(text);-->
+        }
+
+
+
+    </script>
+</head>
+<body>
+
+<h1>上传训练数据，训练模型</h1>
+<form action="/upload/train" method=post enctype=multipart/form-data>
+    <p>
+        <input type=file name=file>
+        <input type=submit value=Upload>
+    </p>
+</form>
+
+<h1>上传测试数据，进行推理</h1>
+<form action="/upload/test" method=post enctype=multipart/form-data>
+    <p>
+        <input type=file name=file>
+        <input type=submit value=Upload>
+    </p>
+</form>
+
+<h2 id="txt">当前模型：</h2>
+<a href="/download">下载模型</a>
+</body>
+</html>
